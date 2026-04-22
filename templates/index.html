@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+<h1 class="title">Task Dashboard</h1>
+
+<div class="card progress-card">
+    <p class="progress-text">Progress {{ efficiency }}%</p>
+    <div class="progress">
+        <div class="progress-fill" style="width: {{ efficiency }}%"></div>
+    </div>
+    <p class="sub-text">
+        {% if efficiency == 0 %}
+        Getting started
+        {% elif efficiency < 50 %}
+        In progress
+        {% else %}
+        Strong progress
+        {% endif %}
+    </p>
+</div>
+
+<div class="card focus">
+<div class="focus-box focus-today">
+    <h3>Today’s Focus</h3>
+    <p>{{ today_focus[1] if today_focus else "No urgent tasks" }}</p>
+</div>
+<div class="focus-box focus-upcoming">
+    <h3>Upcoming Priority</h3>
+    <p>{{ upcoming_focus[1] if upcoming_focus else "All tasks on track" }}</p>
+</div>
+</div>
+
+<div class="card">
+<form action="/add" method="post">
+<input type="text" name="name" placeholder="New task..." required>
+<select name="priority">
+<option>High</option>
+<option>Medium</option>
+<option>Low</option>
+</select>
+<input type="date" name="deadline">
+<button>Add Task</button>
+</form>
+</div>
+
+<div class="grid">
+
+<div class="card">
+<h3>Today</h3>
+{% for t in today_tasks %}
+<div class="task {{t[2]|lower}}">
+<span>{{ t[1] }}</span>
+<div>
+{% if t[3] and t[3] < today %}
+<span class="tag overdue">Overdue</span>
+{% elif t[3] == today %}
+<span class="tag today">Due Today</span>
+{% endif %}
+<a href="/done/{{t[0]}}">Complete</a>
+</div>
+</div>
+{% endfor %}
+</div>
+
+<div class="card">
+<h3>Upcoming</h3>
+{% for t in upcoming_tasks %}
+<div class="task {{t[2]|lower}}">
+{{ t[1] }}
+</div>
+{% endfor %}
+</div>
+
+<div class="card">
+<h3>Completed</h3>
+{% for t in done_tasks %}
+<div class="task done">
+{{ t[1] }}
+<a href="/undo/{{t[0]}}">Undo</a>
+</div>
+{% endfor %}
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,106 @@
+:root {
+    --primary: #6366f1;
+    --secondary: #14b8a6;
+    --accent: #f97316;
+    --bg: #f4f6fb;
+    --card: #ffffff;
+    --text: #1f2937;
+}
+
+body {
+    font-family: Arial;
+    background: var(--bg);
+    color: var(--text);
+}
+
+.container {
+    width: 75%;
+    margin: auto;
+}
+
+.title {
+    text-align: center;
+}
+
+.card {
+    background: var(--card);
+    padding: 18px;
+    margin: 15px 0;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+}
+
+.progress {
+    height: 10px;
+    background: #e5e7eb;
+    border-radius: 5px;
+}
+
+.progress-fill {
+    height: 10px;
+    background: linear-gradient(90deg, #6366f1, #8b5cf6);
+}
+
+.focus {
+    display: flex;
+    gap: 10px;
+}
+
+.focus-box {
+    flex: 1;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.focus-today {
+    background: rgba(20,184,166,0.1);
+    border-left: 4px solid var(--secondary);
+}
+
+.focus-upcoming {
+    background: rgba(249,115,22,0.1);
+    border-left: 4px solid var(--accent);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.task {
+    padding: 10px;
+    margin: 6px 0;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.high { border-left: 5px solid #ef4444; }
+.medium { border-left: 5px solid #f59e0b; }
+.low { border-left: 5px solid #22c55e; }
+
+.done {
+    opacity: 0.5;
+}
+
+.tag {
+    font-size: 11px;
+    padding: 3px 6px;
+    border-radius: 5px;
+}
+
+.overdue {
+    background: red;
+    color: white;
+}
+
+.today {
+    background: orange;
+    color: white;
+}
+
+input, select, button {
+    padding: 8px;
+    margin: 5px;
+}
