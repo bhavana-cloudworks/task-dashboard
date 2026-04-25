@@ -437,3 +437,26 @@ body {
     position: absolute;
     border-radius: 50%;
 }
+.task-item,
+.task-item * {
+    color: #0f172a !important;  /* force dark text */
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Prevent flex collapse hiding text */
+.task-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.task-info span:first-child {
+    display: block;
+    overflow: visible;
+    white-space: normal;
+}
+
+/* ensure icons stay right */
+.actions {
+    flex-shrink: 0;
+}

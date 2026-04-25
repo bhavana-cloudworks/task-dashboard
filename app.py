@@ -1,95 +1,118 @@
-from flask import Flask, render_template, request, redirect, url_for
-import sqlite3
-from datetime import datetime, date
+from flask import Flask, render_template, request, redirect
+from datetime import date
 
 app = Flask(__name__)
 
-def init_db():
-    conn = sqlite3.connect("tasks.db")
-    c = conn.cursor()
-    c.execute('''CREATE TABLE IF NOT EXISTS tasks (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT,
-        priority TEXT,
-        deadline TEXT,
-        status TEXT
-    )''')
-    conn.commit()
-    conn.close()
+tasks = []
+done_tasks = []
 
-@app.route('/')
-def home():
-    conn = sqlite3.connect("tasks.db")
-    c = conn.cursor()
-    c.execute("SELECT * FROM tasks")
-    tasks = c.fetchall()
-    conn.close()
+# ---------------- AI LOGIC ----------------
+def agentic_ai_recommendation(tasks):
+    if not tasks:
+        return "No tasks yet "
 
     today = date.today()
-    today_tasks, upcoming_tasks, done_tasks = [], [], []
-    completed = 0
+    priority_order = {"High": 1, "Medium": 2, "Low": 3}
+
+    # Sort by deadline first, then priority
+    sorted_tasks = sorted(
+        tasks,
+        key=lambda x: (
+            date.fromisoformat(x["deadline"]),
+            priority_order[x["priority"]]
+        )
+    )
+
+    top_task = sorted_tasks[0]
+    task_date = date.fromisoformat(top_task["deadline"])
+
+    if task_date == today:
+        return f"🔥 Do '{top_task['name']}' today (urgent)"
+    elif task_date < today:
+        return f"⚠️ '{top_task['name']}' is overdue!"
+    else:
+        return f"📅 Plan '{top_task['name']}' next"
+
+
+# ---------------- ROUTES ----------------
+@app.route("/")
+def index():
+    ai_suggestion = agentic_ai_recommendation(tasks)
+
+    today = date.today()
+
+    today_list = []
+    upcoming_list = []
 
     for t in tasks:
-        if t[4] == "Done":
-            done_tasks.append(t)
-            completed += 1
-        else:
-            if t[3] and datetime.fromisoformat(t[3]).date() <= today:
-                today_tasks.append(t)
-            else:
-                upcoming_tasks.append(t)
+        task_date = date.fromisoformat(t["deadline"])
 
-    efficiency = int((completed / len(tasks)) * 100) if tasks else 0
+        if task_date == today:
+            today_list.append(t)
+        elif task_date > today:
+            upcoming_list.append(t)
 
-    # ✅ ADD THIS LINE (for greeting)
-    now_hour = datetime.now().hour
+    # Priority sorting
+    priority_order = {"High": 1, "Medium": 2, "Low": 3}
+
+    today_list.sort(key=lambda x: priority_order[x["priority"]])
+    upcoming_list.sort(key=lambda x: (
+        date.fromisoformat(x["deadline"]),
+        priority_order[x["priority"]]
+    ))
 
     return render_template(
         "index.html",
-        today_tasks=today_tasks,
-        upcoming_tasks=upcoming_tasks,
+        today_tasks=today_list,
+        upcoming_tasks=upcoming_list,
         done_tasks=done_tasks,
-        efficiency=efficiency,
-        now_hour=now_hour   # ✅ PASS TO HTML
+        efficiency=78,
+        ai_suggestion=ai_suggestion
     )
 
-@app.route('/add', methods=['POST'])
+
+@app.route("/add", methods=["POST"])
 def add():
-    conn = sqlite3.connect("tasks.db")
-    c = conn.cursor()
-    c.execute("INSERT INTO tasks VALUES(NULL,?,?,?,?)",
-              (request.form['name'], request.form['priority'], request.form['deadline'], "Pending"))
-    conn.commit()
-    conn.close()
-    return redirect(url_for('home'))
+    tasks.append({
+        "id": len(tasks) + 1,
+        "name": request.form["name"],
+        "priority": request.form["priority"],
+        "deadline": request.form["deadline"]
+    })
+    return redirect("/")
 
-@app.route('/done/<int:id>')
+
+@app.route("/done/<int:id>")
 def done(id):
-    conn = sqlite3.connect("tasks.db")
-    c = conn.cursor()
-    c.execute("UPDATE tasks SET status='Done' WHERE id=?", (id,))
-    conn.commit()
-    conn.close()
-    return redirect(url_for('home'))
+    global tasks, done_tasks
+    for t in tasks:
+        if t["id"] == id:
+            done_tasks.append(t)
+            tasks.remove(t)
+            break
+    return redirect("/")
 
-@app.route('/undo/<int:id>')
+
+@app.route("/undo/<int:id>")
 def undo(id):
-    conn = sqlite3.connect("tasks.db")
-    c = conn.cursor()
-    c.execute("UPDATE tasks SET status='Pending' WHERE id=?", (id,))
-    conn.commit()
-    conn.close()
-    return redirect(url_for('home'))
+    global tasks, done_tasks
+    for t in done_tasks:
+        if t["id"] == id:
+            tasks.append(t)
+            done_tasks.remove(t)
+            break
+    return redirect("/")
 
-@app.route('/delete/<int:id>')
+
+@app.route("/delete/<int:id>")
 def delete(id):
-    conn = sqlite3.connect("tasks.db")
-    c = conn.cursor()
-    c.execute("DELETE FROM tasks WHERE id=?", (id,))
-    conn.commit()
-    conn.close()
-    return redirect(url_for('home'))
+    global tasks, done_tasks
 
-if __name__ == '__main__':
-    init_db()
+    tasks = [t for t in tasks if t["id"] != id]
+    done_tasks = [t for t in done_tasks if t["id"] != id]
+
+    return redirect("/")
+
+
+if __name__ == "__main__":
     app.run(debug=True)
