@@ -12,26 +12,37 @@ def agentic_ai_recommendation(tasks):
         return "No tasks yet 🚀"
 
     today = date.today()
-    priority_order = {"High": 1, "Medium": 2, "Low": 3}
+    priority_order = {"High": 3, "Medium": 2, "Low": 1}
 
-    sorted_tasks = sorted(
-        tasks,
-        key=lambda x: (
-            date.fromisoformat(x["deadline"]),
-            priority_order[x["priority"]]
-        )
-    )
+    scored_tasks = []
+    for t in tasks:
+        task_date = date.fromisoformat(t["deadline"])
+        days_diff = (task_date - today).days  # negative if overdue
 
-    top_task = sorted_tasks[0]
-    task_date = date.fromisoformat(top_task["deadline"])
+        # Weighted score: priority + urgency
+        if days_diff < 0:  # overdue
+            score = priority_order[t["priority"]] * 10 + abs(days_diff)
+        elif days_diff == 0:  # today
+            score = priority_order[t["priority"]] * 5
+        else:  # upcoming
+            score = priority_order[t["priority"]] + (1 / (days_diff + 1))
 
-    if task_date == today:
-        return f"🔥 Do '{top_task['name']}' today (urgent)"
-    elif task_date < today:
-        return f"⚠️ '{top_task['name']}' is overdue!"
-    else:
-        return f"📅 Plan '{top_task['name']}' next"
+        scored_tasks.append((t, score, days_diff))
 
+    # Sort by score (highest first)
+    scored_tasks.sort(key=lambda x: x[1], reverse=True)
+    top_task, top_score, days_diff = scored_tasks[0]
+
+    # Corrected message logic
+    if days_diff < 0:  # overdue
+        if top_task["priority"] == "High":
+            return f"🔥 Critical overdue task: '{top_task['name']}' must be done first!"
+        else:
+            return f"⚠️ Overdue task: '{top_task['name']}' — handle after today's important work."
+    elif days_diff == 0:  # today
+        return f"📅 Focus on today's task: '{top_task['name']}'"
+    else:  # upcoming
+        return f"🔮 Upcoming task: Prepare for '{top_task['name']}'"
 
 # ---------------- ROUTES ----------------
 @app.route("/")
