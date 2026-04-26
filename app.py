@@ -9,12 +9,11 @@ done_tasks = []
 # ---------------- AI LOGIC ----------------
 def agentic_ai_recommendation(tasks):
     if not tasks:
-        return "No tasks yet "
+        return "No tasks yet 🚀"
 
     today = date.today()
     priority_order = {"High": 1, "Medium": 2, "Low": 3}
 
-    # Sort by deadline first, then priority
     sorted_tasks = sorted(
         tasks,
         key=lambda x: (
@@ -38,11 +37,11 @@ def agentic_ai_recommendation(tasks):
 @app.route("/")
 def index():
     ai_suggestion = agentic_ai_recommendation(tasks)
-
     today = date.today()
 
     today_list = []
     upcoming_list = []
+    overdue_list = []
 
     for t in tasks:
         task_date = date.fromisoformat(t["deadline"])
@@ -51,8 +50,9 @@ def index():
             today_list.append(t)
         elif task_date > today:
             upcoming_list.append(t)
+        else:
+            overdue_list.append(t)
 
-    # Priority sorting
     priority_order = {"High": 1, "Medium": 2, "Low": 3}
 
     today_list.sort(key=lambda x: priority_order[x["priority"]])
@@ -60,13 +60,41 @@ def index():
         date.fromisoformat(x["deadline"]),
         priority_order[x["priority"]]
     ))
+    overdue_list.sort(key=lambda x: (
+        date.fromisoformat(x["deadline"]),
+        priority_order[x["priority"]]
+    ))
+
+    # ---------------- FIXED METRICS ----------------
+    total_tasks = len(tasks) + len(done_tasks)
+
+    if total_tasks == 0:
+        efficiency = 0
+        on_time_rate = 0
+    else:
+        completed = len(done_tasks)
+
+        efficiency = int((completed / total_tasks) * 100)
+
+        on_time_completed = 0
+        for t in done_tasks:
+            task_date = date.fromisoformat(t["deadline"])
+            if task_date >= today:
+                on_time_completed += 1
+
+        if completed == 0:
+            on_time_rate = 0
+        else:
+            on_time_rate = int((on_time_completed / completed) * 100)
 
     return render_template(
         "index.html",
         today_tasks=today_list,
         upcoming_tasks=upcoming_list,
         done_tasks=done_tasks,
-        efficiency=78,
+        overdue_tasks=overdue_list,
+        efficiency=efficiency,
+        on_time_rate=on_time_rate,
         ai_suggestion=ai_suggestion
     )
 
@@ -74,7 +102,7 @@ def index():
 @app.route("/add", methods=["POST"])
 def add():
     tasks.append({
-        "id": len(tasks) + 1,
+        "id": len(tasks) + len(done_tasks) + 1,
         "name": request.form["name"],
         "priority": request.form["priority"],
         "deadline": request.form["deadline"]
@@ -107,12 +135,11 @@ def undo(id):
 @app.route("/delete/<int:id>")
 def delete(id):
     global tasks, done_tasks
-
     tasks = [t for t in tasks if t["id"] != id]
     done_tasks = [t for t in done_tasks if t["id"] != id]
-
     return redirect("/")
 
 
+# ---------------- RUN APP ----------------
 if __name__ == "__main__":
     app.run(debug=True)
