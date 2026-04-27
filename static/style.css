@@ -1,5 +1,5 @@
 /* =========================
-    GLOBAL
+   Global styles
 ========================= */
 * {
     box-sizing: border-box;
@@ -14,7 +14,7 @@
     --red: #ef4444;
 }
 
-/* BACKGROUND */
+/* Page background */
 body {
     font-family: 'Inter', sans-serif;
     background: linear-gradient(135deg, #f3e8ff, #eef2ff);
@@ -24,7 +24,7 @@ body {
 }
 
 /* =========================
-    SIDEBAR (FIXED + MERGED)
+   Sidebar
 ========================= */
 .sidebar { 
     width: 250px; 
@@ -47,20 +47,18 @@ body {
     margin: 0 0 30px 0;
     text-align: left;
     padding-left: 9px;
-     border-bottom: 2px solid rgba(255,255,255,0.2);
+    border-bottom: 2px solid rgba(255,255,255,0.2);
     padding-bottom: 12px;
     text-shadow: 0 2px 6px rgba(0,0,0,0.4);
-     margin-top: 10px;
+    margin-top: 10px;
 }
 
-
 .sidebar h2 span:first-child {
-    
-     color: #ffffff; /* bright yellow */
+     color: #ffffff; 
 }
 
 .sidebar h2 span:last-child {
-    color: #facc15; /* white */
+    color: #facc15; 
 }
 
 .nav-item { 
@@ -81,7 +79,7 @@ body {
 }
 
 /* =========================
-    MAIN WRAPPER
+   Main layout
 ========================= */
 .main-wrapper { 
     flex: 1; 
@@ -91,7 +89,7 @@ body {
 }
 
 /* =========================
-    TOP BAR (MERGED)
+   Top bar
 ========================= */
 .top-bar { 
     background: linear-gradient(180deg, #5b21b6, #7c3aed);
@@ -100,11 +98,9 @@ body {
     justify-content: space-between; 
     align-items: center; 
     color: white;
-
     position: sticky;
     top: 0;
     z-index: 500;
-
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     backdrop-filter: blur(6px);
 }
@@ -133,16 +129,16 @@ body {
 }
 
 /* =========================
-    CONTENT
+   Content area
 ========================= */
 .content {
     padding: 30px 40px;
-    max-width: 1450px;
+    max-width: 1700px;
     margin: auto;
 }
 
 /* =========================
-    HEADER
+   Header
 ========================= */
 .content-header {
     margin-bottom: 20px;
@@ -150,7 +146,7 @@ body {
 }
 
 .dashboard-top-title {
-    font-size: 15px;
+    font-size: 20px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -159,7 +155,7 @@ body {
 }
 
 /* =========================
-    ANALYTICS
+   Analytics section
 ========================= */
 .analytics-row {
     display: grid;
@@ -169,18 +165,16 @@ body {
 }
 
 /* =========================
-    CARDS
+   Cards
 ========================= */
 .card, .metric-card, .column-card {
     background: rgba(255,255,255,0.85);
     backdrop-filter: blur(14px);
     border-radius: 20px;
     padding: 25px;
-
     box-shadow:
         0 10px 25px rgba(0,0,0,0.08),
         0 20px 40px rgba(124,58,237,0.12);
-
     border: 1px solid rgba(255,255,255,0.6);
 }
 
@@ -192,12 +186,15 @@ body {
 }
 
 /* =========================
-    DONUT
+   Donut chart
 ========================= */
 .donut-card {
     display: flex;
     align-items: center;
+    justify-content: center;
+    height: 100%; 
     gap: 30px;
+    text-align: left;
 }
 
 .donut-container {
@@ -206,7 +203,6 @@ body {
     height: var(--w);
     border-radius: 50%;
     position: relative;
-
     background: radial-gradient(closest-side, white 82%, transparent 83% 100%),
                 conic-gradient(var(--teal) calc(var(--p) * 1%), #f1f5f9 0);
 }
@@ -221,7 +217,7 @@ body {
 }
 
 .donut-percent {
-    font-size: 20px;
+    font-size: 27px;
     font-weight: 700;
 }
 
@@ -231,7 +227,7 @@ body {
 }
 
 /* =========================
-    METRICS
+   Metrics
 ========================= */
 .metrics-grid {
     display: grid;
@@ -253,7 +249,6 @@ body {
     border-radius: 20px;
     padding: 1px;
     background: linear-gradient(135deg, #c084fc, #22d3ee);
-
     -webkit-mask:
         linear-gradient(#fff 0 0) content-box,
         linear-gradient(#fff 0 0);
@@ -279,17 +274,32 @@ body {
 .metric-flex {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
-    margin-top: 10px;
     align-items: center;
-}
-
-.metric-flex canvas {
-    flex-shrink: 0;   /* prevents squeezing */
+    margin-top: 10px;
 }
 
 /* =========================
-    ADD TASK
+   AI Insight card
+========================= */
+.ai-box {
+    background: #111827;
+    color: white;
+    padding: 12px;
+    border-radius: 10px;
+    margin: 15px 0;
+    font-size: 30px; /* slightly smaller for better readability */
+    line-height: 1.4;
+}
+
+/* tweak for insight text inside metric cards */
+.metric-card:has(.fa-fire) .metric-value,
+.metric-card:has(.fa-brain) .metric-value {
+    font-size: 17px; /* keep insight text more compact */
+    font-weight: 600;
+}
+
+/* =========================
+   Add task form
 ========================= */
 .add-task-card form {
     display: flex;
@@ -314,7 +324,7 @@ body {
     border: none;
     color: white;
     font-weight: 600;
-     background: linear-gradient(135deg, #34d399, #10b981); 
+    background: linear-gradient(135deg, #34d399, #10b981); 
     box-shadow: 0 8px 18px rgba(20,184,166,0.3);
     cursor: pointer;
 }
@@ -324,11 +334,11 @@ body {
 }
 
 /* =========================
-    TASK GRID
+   Task grid
 ========================= */
 .grid-3 {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* ONLY CHANGE */
+    grid-template-columns: repeat(4, 1fr);
     gap: 25px;
     margin-top: 25px;
 }
@@ -352,9 +362,11 @@ body {
     display: flex;
     flex-direction: column;
     gap: 6px;
+    flex: 1;
+    min-width: 0;
 }
 
-/* BADGES */
+/* priority badges */
 .badge {
     font-size: 10px;
     padding: 4px 10px;
@@ -367,11 +379,12 @@ body {
 .low { background: #dcfce7; color: #22c55e; }
 
 /* =========================
-    ACTION BUTTONS
+   Action buttons
 ========================= */
 .actions {
     display: flex;
     gap: 10px;
+    flex-shrink: 0;
 }
 
 .actions a {
@@ -386,95 +399,9 @@ body {
 }
 
 /* =========================
-    RESPONSIVE
+   Progress bars
 ========================= */
-@media (max-width: 900px) {
-    .analytics-row {
-        grid-template-columns: 1fr;
-    }
-
-    .grid-3 {
-        grid-template-columns: 1fr;
-    }
-}
-
-.top-greeting {
-    color: white;
-    font-weight: 500;
-    font-size: 14px;
-}
-
-/* MINI CHART */
-.mini-chart {
-    width: 300px !important;
-    height: 60px !important;
-    margin-top: 10px;
-}
-
-/* TOP ICONS */
-.top-right {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.top-icons {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    color: white;
-    font-size: 16px;
-}
-
-.top-icons i {
-    cursor: pointer;
-    opacity: 0.8;
-    transition: all 0.2s ease;
-    padding: 8px;
-    border-radius: 8px;
-}
-
-.top-icons i:hover {
-    opacity: 1;
-    background: rgba(255,255,255,0.15);
-    transform: translateY(-2px);
-}
-
-.top-icons .fa-bell::after {
-    content: "";
-    width: 6px;
-    height: 6px;
-    background: red;
-    position: absolute;
-    border-radius: 50%;
-}
-
-/* FORCE TEXT FIX */
-.task-item,
-.task-item * {
-    color: #0f172a !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-}
-
-.task-info {
-    flex: 1;
-    min-width: 0;
-}
-
-.task-info span:first-child {
-    display: block;
-    overflow: visible;
-    white-space: normal;
-}
-
-.actions {
-    flex-shrink: 0;
-}
-/* =========================
-   COMPLETED PROGRESS BAR
-========================= */
-.progress-bar {
+.progress-bar, .bar {
     width: 100%;
     height: 8px;
     background: #e2e8f0;
@@ -483,147 +410,19 @@ body {
     overflow: hidden;
 }
 
-.progress-bar div {
+.progress-bar div, .fill {
     height: 100%;
     background: linear-gradient(135deg, #34d399, #10b981);
     border-radius: 10px;
     transition: width 0.4s ease;
-}
-body {
-    font-family: Arial;
-    background: #f4f6f8;
-    margin: 0;
-}
-
-.container {
-    width: 90%;
-    margin: auto;
-    padding: 20px;
-}
-
-h1 {
-    text-align: center;
-}
-
-.ai-box {
-    background: #111827;
-    color: white;
-    padding: 10px;
-    border-radius: 10px;
-    margin: 15px 0;
-}
-
-/* ---------------- METRICS ---------------- */
-.metrics {
-    display: flex;
-    gap: 20px;
-}
-
-.card {
-    flex: 1;
-    background: white;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-}
-
-.center {
-    text-align: center;
-}
-
-.big {
-    font-size: 28px;
-    font-weight: bold;
-}
-
-/* ---------------- BAR ---------------- */
-.bar {
-    height: 8px;
-    background: #e5e7eb;
-    border-radius: 10px;
-    margin-top: 10px;
-}
-
-.fill {
-    height: 100%;
-    background: linear-gradient(90deg, #22c55e, #16a34a);
-    border-radius: 10px;
 }
 
 .fill.blue {
     background: linear-gradient(90deg, #3b82f6, #60a5fa);
 }
 
-/* ---------------- RING ---------------- */
-.ring {
-    width: 90px;
-    height: 90px;
-    margin: auto;
-    border-radius: 50%;
-    background: conic-gradient(#3b82f6 calc(var(--p, 50) * 1%), #e5e7eb 0);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.circle {
-    width: 70px;
-    height: 70px;
-    background: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-}
-
-/* ---------------- FORM ---------------- */
-.form {
-    display: flex;
-    gap: 10px;
-    margin: 20px 0;
-}
-
-input, select, button {
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-}
-
-button {
-    background: black;
-    color: white;
-    cursor: pointer;
-}
-
-/* ---------------- TASK GRID ---------------- */
-.grid {
-    display: flex;
-    gap: 20px;
-}
-
-.box {
-    flex: 1;
-    background: white;
-    padding: 15px;
-    border-radius: 15px;
-}
-
-.task {
-    padding: 8px;
-    background: #f1f5f9;
-    margin: 5px 0;
-    border-radius: 6px;
-    display: flex;
-    justify-content: space-between;
-}
-
-.done {
-    text-decoration: line-through;
-    opacity: 0.6;
-}
 .mini-progress {
-    width: 70px;              /* SAME as chart size */
+    width: 70px;
     height: 6px;
     background: #e5e7eb;
     border-radius: 10px;
@@ -634,5 +433,25 @@ button {
     height: 100%;
     background: linear-gradient(90deg, #14b8a6, #10b981);
     border-radius: 10px;
-    transition: width 0.4s ease;
+}
+
+/* =========================
+   Responsive tweaks
+========================= */
+@media (max-width: 900px) {
+    .analytics-row, .grid-3, .metrics, .grid {
+        grid-template-columns: 1fr;
+        flex-direction: column;
+    }
+}
+
+/* make sure task text stays readable */
+.task-item, .task-item * {
+    color: #0f172a !important;
+    opacity: 1 !important;
+}
+
+.task-info span:first-child {
+    display: block;
+    white-space: normal;
 }

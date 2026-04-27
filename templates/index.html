@@ -52,6 +52,16 @@
             font-weight: 600;
             color: #6b7280;
         }
+
+        /* AI insight text styling */
+        .ai-insight-text {
+            font-size: 19px;
+            font-weight: 700;
+            line-height: 1.4;
+            color: #334155;
+            white-space: normal;
+            word-break: break-word;
+        }
     </style>
 </head>
 
@@ -132,8 +142,8 @@
                             </div>
                         </div>
                         <div class="mini-progress">
-    <div class="mini-progress-fill" style="width: {{ efficiency }}%"></div>
-</div>
+                            <div class="mini-progress-fill" style="width: {{ efficiency }}%"></div>
+                        </div>
                     </div>
                 </div>
 
@@ -141,9 +151,12 @@
                     <div class="metric-flex">
                         <div>
                             <span class="metric-label">AI Insight</span>
-                            <div class="metric-value">
-                                 {{ ai_suggestion }}
+
+                            <!-- AI insight text -->
+                            <div class="metric-value ai-insight-text">
+                                {{ ai_suggestion }}
                             </div>
+
                         </div>
                         <i class="fa-solid fa-brain" style="font-size:20px; color:#7c3aed;"></i>
                     </div>
@@ -152,6 +165,7 @@
                 <div class="metric-card">
                     <div class="metric-flex">
                         <div>
+                            
                             <span class="metric-label">On-Time Rate</span>
                             <div class="metric-value" style="color:#f97316;">
                                 {{ efficiency }}%
@@ -182,7 +196,6 @@
 
         <div class="grid-3">
 
-            <!-- OVERDUE -->
             <div class="column-card">
                 <h3>Overdue ⏰</h3>
                 {% for t in overdue_tasks %}
@@ -201,7 +214,6 @@
                 {% endfor %}
             </div>
 
-            <!-- TODAY -->
             <div class="column-card">
                 <h3>Today 🔥</h3>
                 {% for t in today_tasks %}
@@ -218,7 +230,6 @@
                 {% endfor %}
             </div>
 
-            <!-- UPCOMING -->
             <div class="column-card">
                 <h3>Upcoming 📅</h3>
                 {% for t in upcoming_tasks %}
@@ -235,7 +246,6 @@
                 {% endfor %}
             </div>
 
-            <!-- COMPLETED -->
             <div class="column-card">
                 <h3>Completed ✅</h3>
                 {% for t in done_tasks %}
@@ -264,7 +274,6 @@ const chartOptions = {
     elements: { point: { radius: 0 } }
 };
 
-// BAR CHART (Total Volume)
 new Chart(document.getElementById("barChart"), {
     type: "bar",
     data: {
@@ -278,33 +287,6 @@ new Chart(document.getElementById("barChart"), {
     options: chartOptions
 });
 
-new Chart(document.getElementById("donutChart"), {
-    type: "doughnut",
-    data: {
-        datasets: [{
-            data: [
-                {{ done_tasks|length }},
-                {{ 10 if done_tasks|length == 0 else 0 }}
-            ],
-            backgroundColor: [
-                "#14b8a6",   // teal
-                "#cbd5f5"    // darker gray (more visible)
-            ],
-            borderWidth: 0
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        cutout: "55%",   // 🔥 thicker donut (was 70%)
-        plugins: {
-            legend: { display: false }
-        }
-    }
-});
- 
-
-// LINE CHART (On-Time Rate)
 new Chart(document.getElementById("lineChart"), {
     type: "line",
     data: {

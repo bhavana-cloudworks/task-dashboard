@@ -6,45 +6,55 @@ app = Flask(__name__)
 tasks = []
 done_tasks = []
 
-# ---------------- AI LOGIC ----------------
+# AI logic for task prioritization
 def agentic_ai_recommendation(tasks):
     if not tasks:
-        return "No tasks yet 🚀"
+        return "✨ Schedule looks clean! Ready to deploy a new task?"
 
     today = date.today()
-    priority_order = {"High": 3, "Medium": 2, "Low": 1}
+    priority_weight = {"High": 3, "Medium": 2, "Low": 1}
 
     scored_tasks = []
+
     for t in tasks:
         task_date = date.fromisoformat(t["deadline"])
-        days_diff = (task_date - today).days  # negative if overdue
+        days_diff = (task_date - today).days
 
-        # Weighted score: priority + urgency
-        if days_diff < 0:  # overdue
-            score = priority_order[t["priority"]] * 10 + abs(days_diff)
-        elif days_diff == 0:  # today
-            score = priority_order[t["priority"]] * 5
-        else:  # upcoming
-            score = priority_order[t["priority"]] + (1 / (days_diff + 1))
-
-        scored_tasks.append((t, score, days_diff))
-
-    # Sort by score (highest first)
-    scored_tasks.sort(key=lambda x: x[1], reverse=True)
-    top_task, top_score, days_diff = scored_tasks[0]
-
-    # Corrected message logic
-    if days_diff < 0:  # overdue
-        if top_task["priority"] == "High":
-            return f"🔥 Critical overdue task: '{top_task['name']}' must be done first!"
+        if days_diff < 0:
+            status = "Overdue"
+            status_weight = 2
+        elif days_diff == 0:
+            status = "Today"
+            status_weight = 1
         else:
-            return f"⚠️ Overdue task: '{top_task['name']}' — handle after today's important work."
-    elif days_diff == 0:  # today
-        return f"📅 Focus on today's task: '{top_task['name']}'"
-    else:  # upcoming
-        return f"🔮 Upcoming task: Prepare for '{top_task['name']}'"
+            status = "Upcoming"
+            status_weight = 0
 
-# ---------------- ROUTES ----------------
+        score = status_weight * priority_weight[t["priority"]]
+
+        scored_tasks.append({
+            "name": t["name"],
+            "priority": t["priority"],
+            "status": status,
+            "score": score
+        })
+
+    scored_tasks.sort(key=lambda x: x["score"], reverse=True)
+
+    if not scored_tasks:
+        return "✅ All tasks completed. Great job improving your Efficiency!"
+
+    top_task = scored_tasks[0]
+    msg = f"🔥 Focus: {top_task['priority']}-priority '{top_task['name']}' ({top_task['status']})."
+
+    if len(scored_tasks) > 1:
+        second_task = scored_tasks[1]
+        msg += f"\n➡️ Next: {second_task['priority']}-priority '{second_task['name']}' ({second_task['status']})."
+
+    return msg
+
+
+# Routes
 @app.route("/")
 def index():
     ai_suggestion = agentic_ai_recommendation(tasks)
@@ -76,7 +86,6 @@ def index():
         priority_order[x["priority"]]
     ))
 
-    # ---------------- FIXED METRICS ----------------
     total_tasks = len(tasks) + len(done_tasks)
 
     if total_tasks == 0:
@@ -151,6 +160,6 @@ def delete(id):
     return redirect("/")
 
 
-# ---------------- RUN APP ----------------
+# run app
 if __name__ == "__main__":
     app.run(debug=True)
