@@ -1,79 +1,73 @@
-AI-Powered Smart Task Dashboard for Productivity Optimization
 
-A productivity-focused task management system built with Flask that combines structured task tracking with a lightweight agentic AI engine for intelligent task prioritization and actionable insights.
+# Smart Task Dashboard
+
+Prioritize smarter. Execute faster.  
+A Flask-based productivity system that transforms static to-do lists into a dynamic execution engine using a deterministic scoring model (urgency × priority × deadline proximity).
+
+Live Demo: https://smart-task-dashboard-l0wo.onrender.com/
+
+![Backend](https://img.shields.io/badge/Backend-Flask-blue)
+![Database](https://img.shields.io/badge/Database-SQLite-lightgrey)
+![UI](https://img.shields.io/badge/UI-Responsive-orange)
+
+---
+
+## One-Line Problem Statement
+Most to-do apps store tasks. This system decides execution order.
+
+---
+
+## Preview
+### Real-time task prioritization dashboard:
+<img width="1909" height="914" alt="image" src="https://github.com/user-attachments/assets/88598b91-b213-48ff-b069-7f53e599531a" />
+
+
+---
+
+## Highlights
+* Dynamic Prioritization Engine → Ranks tasks in real time using urgency × priority × deadline proximity.
+* Productivity Tracking → Monitor completion rates and performance insights.
+* Rule-Based Recommendation System → Deterministic logic inspired by scheduling heuristics.
+* Clean Responsive UI → Minimalist, distraction-free interface.
+* Lightweight Architecture → Deployable Flask app with SQLite persistence.
 
 ---
 
 ## Overview
-
-Smart Task Dashboard helps users manage tasks efficiently by tracking deadlines, measuring performance, and providing data-driven recommendations.
-
-The system extends beyond a basic to-do list by incorporating a logic-based AI layer that assists users in deciding what to work on next.
+Smart Task Dashboard is a productivity-focused task manager built with Flask. It replaces static task lists with a real-time ranking system that helps users focus on high-impact tasks first, reducing decision fatigue and improving execution efficiency.
 
 ---
 
-## UI Preview
+## Task Intelligence Engine
+A deterministic scoring system inspired by scheduling heuristics:
 
+Score = Priority Weight × Urgency Factor × Deadline Proximity
 
-<img width="1909" height="914" alt="image" src="https://github.com/user-attachments/assets/b4751aed-fcd4-438d-87ce-02900fbb124b" />
-
-
----
-
-## Key Features
-
-* Task creation, tracking, and completion management
-* Deadline-aware scheduling and prioritization
-* Productivity score based on task performance
-* On-time completion rate monitoring
-* AI-powered task recommendations and insights
-* Clean, responsive user interface
-
----
-
-## AI Insight Engine
-
-The application includes a lightweight agentic AI module that enhances decision-making by:
-
-* Evaluating task deadlines and priority levels
-* Identifying overdue and high-impact tasks
-* Suggesting the next best action for improved efficiency
-* Generating real-time productivity insights
-
-**Logic Spotlight:**
-The AI system uses a rule-based scoring mechanism to dynamically rank tasks based on urgency (deadline proximity) and importance (priority level).
-
-Example insight:
-
-> "Focus on high-priority tasks nearing their deadline to maintain a strong completion rate."
+### Example Output
+* Submit report (High priority, due today) → Rank #1  
+* Read documentation (Low priority, no deadline) → Rank #5
 
 ---
 
 ## Tech Stack
-
-* Backend: Flask (Python)
-* Frontend: HTML, CSS
-* Database: SQLite
+* Backend: Flask (Python, REST-style routing)
+* Frontend: HTML5, CSS3 (Responsive UI)
+* Storage: In-memory Python lists
 
 ---
 
 ## Project Structure
-
-```
+```text
 task-dashboard/
-│
-├── app.py
-├── tasks.db
-├── static/
-│   └── style.css
-├── templates/
-│   └── index.html
-└── README.md
-```
+├── app.py           # Application logic and routing
+├── static/          # CSS and frontend assets
+├── templates/       # HTML layouts
+└── README.md        # Documentation
+````
 
 ---
 
-## Installation and Setup
+## Installation & Setup
 
 ```bash
 git clone https://github.com/bhavana-cloudworks/task-dashboard.git
@@ -82,26 +76,42 @@ pip install -r requirements.txt
 python app.py
 ```
 
-Access the application at:
-http://127.0.0.1:5000
+Access the application at: [http://127.0.0.1:5000](http://127.0.0.1:5000)
 
 ---
 
 ## Usage
 
-* Add tasks with priority and deadlines
-* Track progress and completion status
-* Monitor productivity metrics in real time
-* Use AI-generated suggestions to optimize workflow
+* Add tasks with specific priority and deadlines.
+* View the automatically ranked task list.
+* Track completion status in real time.
+* Use system-generated recommendations to plan your workday.
+
+---
+
+## Impact
+
+* Eliminates decision fatigue in daily task planning.
+* Improves focus by prioritizing high-impact tasks automatically.
+* Encourages consistent execution over simple task accumulation.
 
 ---
 
 ## Future Enhancements
 
-* User authentication and multi-user support
-* Cloud deployment with persistent hosting
-* Advanced analytics and visualization
-* Integration with external AI APIs
+* User authentication and multi-user support.
+* Cloud database hosting for persistent data.
+* Advanced analytics and visualization dashboards.
+* Mobile-responsive PWA version.
+
+---
+
+## What This Project Demonstrates
+- Backend system design using Flask
+- Real-time decision-making logic (scoring engine)
+- Clean separation of frontend and backend
+- Deployment using cloud platform (Render)
+- Product-thinking beyond CRUD applications
 
 ---
 
