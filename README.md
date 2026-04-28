@@ -1,4 +1,4 @@
-# Smart Task Dashboard
+AI-Powered Smart Task Dashboard for Productivity Optimization
 
 A productivity-focused task management system built with Flask that combines structured task tracking with a lightweight agentic AI engine for intelligent task prioritization and actionable insights.
 
