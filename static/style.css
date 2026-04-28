@@ -287,14 +287,14 @@ body {
     padding: 12px;
     border-radius: 10px;
     margin: 15px 0;
-    font-size: 30px; /* slightly smaller for better readability */
+    font-size: 30px; 
     line-height: 1.4;
 }
 
 /* tweak for insight text inside metric cards */
 .metric-card:has(.fa-fire) .metric-value,
 .metric-card:has(.fa-brain) .metric-value {
-    font-size: 17px; /* keep insight text more compact */
+    font-size: 17px; 
     font-weight: 600;
 }
 
@@ -444,8 +444,6 @@ body {
         flex-direction: column;
     }
 }
-
-/* make sure task text stays readable */
 .task-item, .task-item * {
     color: #0f172a !important;
     opacity: 1 !important;
